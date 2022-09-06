@@ -77,6 +77,32 @@
             </c:otherwise>
         </c:choose>
     </table>
+    <%--<table id="tmp" class="sport_elective_table">
+        &lt;%&ndash;<h2><fmt:message key="list_menu_jsp.hello"/>, ${sessionScope.user.login}</h2> &ndash;%&gt;
+        &lt;%&ndash; CONTENT &ndash;%&gt;
+        <c:choose>
+            <c:when test="${fn:length(tempList) == 0 &&  empty Temp}"><h3>No such users</h3></c:when>
+            <c:otherwise>
+                <thead>
+                <tr>
+                    <td>User name</td>
+                    <td>Role name</td>
+                    <td>Elective count</td>
+                </tr>
+                </thead>
+
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${tempList}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.login}</td>
+                        <td>${item.roleName}</td>
+                        <td>${item.electiveId}</td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+    </table>--%>
 </form>
 </body>
 <%@ include file="/jspf/footer.jspf" %>

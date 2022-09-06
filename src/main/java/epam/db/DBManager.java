@@ -3,6 +3,7 @@ package epam.db;
 import epam.exceptions.DBException;
 import org.apache.log4j.Logger;
 
+import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -29,28 +30,8 @@ public class DBManager {
         return instance;
     }
 
-    DBManager() throws DBException {
+    DBManager() {
 
-        /*try {
-            Connection con = getConnection();
-            String createDbScript = String.valueOf(getClass().getClassLoader().getResourceAsStream("dbcreate-mysql.sql"));
-            con.createStatement().execute(createDbScript);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }*/
-
-        /*try {
-            driver = DriverManager.getDriver("com.mysql.cj.jdbc.Driver");
-
-//            Context initContext = new InitialContext();
-//            Context envContext = (Context) initContext.lookup("java:comp/env");
-//            // Elective - the name of data source
-//            driver = (DataSource) envContext.lookup("jdbc/Elective");
-//            log.trace("Data source ==> " + driver);
-        } catch (SQLException ex) {
-            log.error("Cannot obtain the data source", ex);
-            throw new DBException("Cannot obtain the data source", ex);
-        }*/
     }
 
     /**
@@ -67,7 +48,6 @@ public class DBManager {
             con = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/client?serverTimezone=UTC", "root", "root");
             con.setAutoCommit(false);
-            //con = driver.connect("jdbc:h2:~/final-project", new Properties());
         } catch (SQLException | ClassNotFoundException ex) {
             log.error("Cannot obtain a connection from the pool", ex);
             throw new DBException("Cannot obtain a connection from the pool", ex);
@@ -75,10 +55,6 @@ public class DBManager {
         return con;
     }
 
-
-    // //////////////////////////////////////////////////////////
-    // DB util methods
-    // //////////////////////////////////////////////////////////
 
     /**
      * Commits and close the given connection.
@@ -111,23 +87,5 @@ public class DBManager {
             log.error("Cannot rollback and close a connection" + ex);
         }
     }
-
-/**************** THIS METHOD IS NOT USED IN THE PROJECT *******/
-    /**
-     * Returns a DB connection. This method is just for a example how to use the
-     * DriverManager to obtain a DB connection. It does not use a pool
-     * connections and not used in this project. It is preferable to use
-     * {@link #getConnection()} method instead.
-     *
-     * @return A DB connection.
-     */
-    public Connection getConnectionWithDriverManager() throws SQLException {
-        Connection connection = DriverManager
-                .getConnection("jdbc:mysql://localhost:3306/client?serverTimezone=UTC", "root", "root");
-        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-        connection.setAutoCommit(false);
-        return connection;
-    }
-/**************************************************************/
 
 }

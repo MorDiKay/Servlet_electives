@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import epam.db.entities.ElectivesHaveUsers;
+import epam.db.entities.Temp;
 import epam.db.entities.Topic;
 import epam.exceptions.DBException;
 import org.apache.log4j.Logger;
@@ -74,6 +75,12 @@ public class MenuDao {
             "SELECT e.id, e.name, e.start_date, e.end_date, e.status, e.topic_id, e.lecturer_id, e.student_count, el.mark"
                     + " FROM electives e JOIN electives_have_users el where e.id=elective_id";
 
+    private static final String SQL_Temp =
+            "SELECT users.name AS login, roles.name AS rolename, COUNT(elective_id) AS elective_count FROM users\n" +
+                    "JOIN electives_have_users ON user_id = users.id\n" +
+                    "JOIN roles ON users.role_id = roles.id\n" +
+                    "WHERE role_id = ?\n" +
+                    "GROUP BY user_id";
 
     /**
      * Returns elective with a given name.
@@ -652,5 +659,37 @@ public class MenuDao {
             else log.error("Cannot commit and close at findUserOrderBeans()");
         }
         return orderUserBeanList;
+    }
+
+    public List<Temp> temp(int roleId) throws DBException {
+        List<Temp> tempList = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            statement = con.prepareStatement(SQL_Temp);
+            statement.setInt(1, roleId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                Temp temp = new Temp();
+                temp.setLogin(rs.getString("login"));
+                temp.setRoleName(rs.getString("rolename"));
+                temp.setElectiveId(rs.getInt("elective_count"));
+                tempList.add(temp);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+            if (con != null)
+                DBManager.getInstance().rollbackAndClose(con);
+            else log.error("Cannot rollback and close: ", ex);
+            throw new DBException("Cannot obtain user order bean with given lecturer identifier ", ex);
+        } finally {
+            if (con != null)
+                DBManager.getInstance().commitAndClose(con);
+            else log.error("Cannot commit and close at findUserOrderBeans()");
+        }
+        return tempList;
     }
 }

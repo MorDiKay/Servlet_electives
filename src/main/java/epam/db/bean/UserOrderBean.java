@@ -3,10 +3,8 @@ package epam.db.bean;
 import java.util.Date;
 
 /**
- * Provides records to virtual table
  * |user.id|elective.id|user.login|elective.topic_id|elective.name|
  * |elective.status|elective.lecturer_id|electives_have_users.mark|elective.end_date|
- *
  */
 public class UserOrderBean {
 

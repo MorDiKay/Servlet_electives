@@ -4,11 +4,9 @@ import epam.Path;
 import epam.db.MenuDao;
 import epam.db.UserDao;
 import epam.db.bean.UserOrderBean;
-import epam.db.entities.Elective;
-import epam.db.entities.Topic;
+import epam.db.entities.Temp;
 import epam.db.entities.User;
 import epam.exceptions.ApplicationException;
-import epam.exceptions.DBException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -63,6 +61,10 @@ public class Journal extends Command {
         }
         log.trace("Found in DB: userOrderBeanList --> " + userOrderBeanList);
 
+        //NEW SQL REQUEST (TEMP)
+        List<Temp> tempList = new MenuDao().temp(1);
+        request.setAttribute("tempList", tempList);
+
         String[] check = null;
 
         if (request.getParameterValues("checkItemDelete") != null) {
@@ -79,6 +81,7 @@ public class Journal extends Command {
         // Put sorted UserOrderBean list to request
         request.setAttribute("userOrderBeanList", userOrderBeanList);
         log.trace("Set the request attribute: userOrderBeanList --> " + userOrderBeanList);
+
 
         log.debug("Command finished");
         return Path.PAGE__LIST_JOURNAL;

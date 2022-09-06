@@ -2,4 +2,4 @@
 Footer (bottom area). 
 ===========================================================================--%> 
 <c:set var="date" value="${not empty sessionScope.date ? sessionScope.date : ''}"/>
-<footer id="footer">&copy;Elective System (EPAM Java Training) <fmt:formatDate value="${date}"/></footer>
+<footer id="footer">&copy;Elective System (PZ_FOR_SEO) <fmt:formatDate value="${date}"/></footer>

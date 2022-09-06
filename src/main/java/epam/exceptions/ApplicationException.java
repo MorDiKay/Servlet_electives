@@ -6,7 +6,7 @@ package epam.exceptions;
  */
  public class ApplicationException extends Exception {
 
-    private static final long serialVersionUID = 8288779062647218916L;
+    //private static final long serialVersionUID = 8288779062647218916L;
 
     public ApplicationException() {
         super();
