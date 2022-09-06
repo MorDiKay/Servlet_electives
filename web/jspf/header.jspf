@@ -1,0 +1,85 @@
+<%--=========================================================================== 
+Header (top area). 
+===========================================================================--%>
+<%@ include file="/jspf/directive/page.jspf" %>
+<%@ include file="/jspf/directive/taglib.jspf" %>
+<c:set var="command" value="${not empty param.command ? param.command : ''}"/>
+<c:set var="page" value="${not empty param.page ? param.page : '1'}"/>
+<script>
+    function mySearch() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("topnav_search_input");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("search_table");
+        if (table == null)
+            table = document.getElementById("search_table1");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+<header>
+    <div class="topnav">
+
+        <!-- Centered link -->
+        <div class="topnav-centered">
+            <a href="/controller?command=cabinet" class="active">Home</a>
+        </div>
+
+        <!-- Left-aligned links (default) -->
+        <a class="topnav_elective" href="#">Elective</a>
+        <a href=/controller?command=contact><fmt:message key="header_jspf.anchor.contact"/></a>
+        <!-- Right-aligned links -->
+        <div class="topnav-right">
+            <a id="topnav_search"><input id="topnav_search_input" type="text" onkeyup="mySearch()"
+                <c:choose><c:when test="${command == 'journal' || command == 'listElectives'}">placeholder="Search for students" </c:when>
+                <c:otherwise>placeholder="Search for electives" </c:otherwise></c:choose>
+            </a>
+            <c:if test="${command == 'listTopics'}">
+                <a href="${pageContext.request.contextPath}/controller?command=listTopics&language=en">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=listTopics&language=ru">Ru</a>
+            </c:if>
+            <c:if test="${command == 'electiveSport' && page == 1}">
+                <a href="${pageContext.request.contextPath}/controller?command=electiveSport&language=en&page=1">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=electiveSport&language=ru&page=1">Ru</a>
+            </c:if>
+            <c:if test="${command == 'electiveSport' && page == 2}">
+                <a href="${pageContext.request.contextPath}/controller?command=electiveSport&language=en&page=2">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=electiveSport&language=ru&page=2">Ru</a>
+            </c:if>
+            <c:if test="${command == 'electiveProgramming' && page == 1}">
+                <a href="${pageContext.request.contextPath}/controller?command=electiveProgramming&language=en&page=1">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=electiveProgramming&language=ru&page=1">Ru</a>
+            </c:if>
+            <c:if test="${command == 'electiveProgramming' && page == 2}">
+                <a href="${pageContext.request.contextPath}/controller?command=electiveProgramming&language=en&page=2">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=electiveProgramming&language=ru&page=2">Ru</a>
+            </c:if>
+            <c:if test="${command == 'cabinet'}">
+                <a href="${pageContext.request.contextPath}/controller?command=cabinet&language=en">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=cabinet&language=ru">Ru</a>
+            </c:if>
+            <c:if test="${command == 'listElectives'}">
+                <a href="${pageContext.request.contextPath}/controller?command=listElectives&language=en">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=listElectives&language=ru">Ru</a>
+            </c:if>
+            <c:if test="${command == 'journal'}">
+                <a href="${pageContext.request.contextPath}/controller?command=journal&language=en">En</a>
+                <a href="${pageContext.request.contextPath}/controller?command=journal&language=ru">Ru</a>
+            </c:if>
+            <a href="/controller?command=logout" style="width: 75px;"><fmt:message key="header_jspf.anchor.logout"/></a>
+        </div>
+    </div>
+</header>
